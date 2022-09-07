@@ -1,0 +1,20 @@
+[
+    {
+        "model": "palantiriAPI.post",
+        "pk": 1,
+        "fields": {
+            "circler": 1,
+            "content": "Really thinking a lot about cryptocurrency lately, please advise",
+            "date_posted": "2022-09-02"
+        }
+    },
+    {
+        "model": "palantiriAPI.post",
+        "pk": 2,
+        "fields": {
+            "circler": 2,
+            "content": "What IS the meaning of life anyway AND DON'T SAY 42",
+            "date_posted": "2022-09-04"
+        }
+    }
+]

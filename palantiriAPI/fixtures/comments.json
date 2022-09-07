@@ -1,0 +1,22 @@
+[
+    {
+        "model": "palantiriAPI.comment",
+        "pk": 1,
+        "fields": {
+            "post": 1,
+            "circler": 2,
+            "content": "Don't do it!!!!!",
+            "date_posted": "2022-09-04"
+        }
+    },
+    {
+        "model": "palantiriAPI.comment",
+        "pk": 2,
+        "fields": {
+            "post": 1,
+            "circler": 3,
+            "content": "I have a great investment platform to get you in on the ground floor-- blazecrazecoinwallet.biz",
+            "date_posted": "2022-09-05"
+        }
+    }
+]

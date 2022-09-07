@@ -1,0 +1,26 @@
+[
+    {
+        "model": "palantiriAPI.circle",
+        "pk": 1,
+        "fields": {
+            "circler": 1,
+            "name": "Dan's Trust Circle"
+        }
+    },
+    {
+        "model": "palantiriAPI.circle",
+        "pk": 2,
+        "fields": {
+            "circler": 2,
+            "name": "Circles of Silence"
+        }
+    },
+    {
+        "model": "palantiriAPI.circle",
+        "pk": 3,
+        "fields": {
+            "circler": 3,
+            "name": "Hit me with some truth Daddy"
+        }
+    }
+]

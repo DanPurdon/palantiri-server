@@ -1,0 +1,29 @@
+[
+    {
+        "model": "palantiriAPI.circlemember",
+        "pk": 1,
+        "fields": {
+            "circler": 1,
+            "circle": 2,
+            "date_joined": "2022-09-03"
+        }
+    },
+    {
+        "model": "palantiriAPI.circlemember",
+        "pk": 2,
+        "fields": {
+            "circler": 2,
+            "circle": 1,
+            "date_joined": "2022-09-02"
+        }
+    },
+    {
+        "model": "palantiriAPI.circlemember",
+        "pk": 3,
+        "fields": {
+            "circler": 3,
+            "circle": 1,
+            "date_joined": "2022-09-01"
+        }
+    }
+]

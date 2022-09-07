@@ -1,0 +1,22 @@
+[
+    {
+        "model": "palantiriAPI.message",
+        "pk": 1,
+        "fields": {
+            "circle": 1,
+            "circler": 2,
+            "content": "I think your life would be greatly enriched if you got into EDM music",
+            "date_sent": "2022-09-06"
+        }
+    },
+    {
+        "model": "palantiriAPI.message",
+        "pk": 2,
+        "fields": {
+            "circle": 1,
+            "circler": 3,
+            "content": "You're doing great, just maybe lighten up on the video games. I've seen your Steam history",
+            "date_sent": "2022-09-05"
+        }
+    }
+]

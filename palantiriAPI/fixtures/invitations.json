@@ -1,0 +1,10 @@
+[
+    {
+        "model": "palantiriAPI.invitation",
+        "pk": 1,
+        "fields": {
+            "circler": 1,
+            "circle": 3
+        }
+    }
+]
