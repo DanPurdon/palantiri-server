@@ -1,13 +1,14 @@
 """View module for handling requests about messages"""
+from datetime import date, datetime
 from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from palantiriAPI.models import Message, Circler, Circle
-
+from django.db.models import Q
 
 class MessageView(ViewSet):
-    """Level up messages view"""
+    """Messages view"""
 
     def retrieve(self, request, pk):
         """Handle GET requests for single message
@@ -23,16 +24,22 @@ class MessageView(ViewSet):
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
     def list(self, request):
-        """Handle GET requests to get all messages
+        """Handle GET requests to get messages 
 
         Returns:
             Response -- JSON serialized list of messages
         """
-        circle = Circle.objects.get(circler=request.auth.user)
-        circle_messages = Message.objects.filter(circle_id=circle.circler_id)
-        # message_type = request.query_params.get('type', None)
-        # if message_type is not None:
-        #     messages = messages.filter(message_type_id=message_type)
+        
+        # current_user = Circler.objects.get(user=request.auth.user)
+        # circle = Circle.objects.get(circler_id=current_user.id)
+        # circle_messages = Message.objects.filter(Q(circle_id=circle.id) | Q(circler_id=current_user.id))
+        circle_messages = Message.objects.all()
+        
+
+        message = request.query_params.get('message', None)
+        if message is not None:
+            circle_messages = circle_messages.filter(id=message)
+
         serializer = MessageSerializer(circle_messages, many=True)
         return Response(serializer.data)
 
@@ -42,45 +49,41 @@ class MessageView(ViewSet):
         Returns
             Response -- JSON serialized message instance
         """
-        messager = Messager.objects.get(user=request.auth.user)
-        message_type = MessageType.objects.get(pk=request.data["message_type"])
+        circler = Circler.objects.get(user=request.auth.user)
+        circle = Circle.objects.get(id=request.data["circle"])
 
         message = Message.objects.create(
-            title=request.data["title"],
-            maker=request.data["maker"],
-            number_of_players=request.data["number_of_players"],
-            skill_level=request.data["skill_level"],
-            messager=messager,
-            message_type=message_type
+            content=request.data["content"],
+            date_sent=date.today(),
+            circle=circle,
+            circler=circler
         )
         serializer = MessageSerializer(message)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def update(self, request, pk):
-        """Handle PUT requests for a message
+    # def update(self, request, pk):
+    #     """Handle PUT requests for a message
 
-        Returns:
-            Response -- Empty body with 204 status code
-        """
+    #     Returns:
+    #         Response -- Empty body with 204 status code
+    #     """
 
-        message = Message.objects.get(pk=pk)
-        message.title = request.data["title"]
-        message.maker = request.data["maker"]
-        message.number_of_players = request.data["number_of_players"]
-        message.skill_level = request.data["skill_level"]
+    #     message = Message.objects.get(pk=pk)
+    #     message.title = request.data["title"]
+    #     message.maker = request.data["maker"]
+    #     message.number_of_players = request.data["number_of_players"]
+    #     message.skill_level = request.data["skill_level"]
 
-        message_type = MessageType.objects.get(pk=request.data["message_type"])
-        message.message_type = message_type
-        message.save()
+    #     message_type = MessageType.objects.get(pk=request.data["message_type"])
+    #     message.message_type = message_type
+    #     message.save()
 
-        return Response(None, status=status.HTTP_204_NO_CONTENT)
+    #     return Response(None, status=status.HTTP_204_NO_CONTENT)
 
     def destroy(self, request, pk):
         message = Message.objects.get(pk=pk)
         message.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
-            
-
 
 
 class MessageSerializer(serializers.ModelSerializer):

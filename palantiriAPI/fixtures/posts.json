@@ -3,6 +3,7 @@
         "model": "palantiriAPI.post",
         "pk": 1,
         "fields": {
+            "circle": 1,
             "circler": 1,
             "content": "Really thinking a lot about cryptocurrency lately, please advise",
             "date_posted": "2022-09-02"
@@ -12,9 +13,30 @@
         "model": "palantiriAPI.post",
         "pk": 2,
         "fields": {
+            "circle": 2,
             "circler": 2,
             "content": "What IS the meaning of life anyway AND DON'T SAY 42",
             "date_posted": "2022-09-04"
+        }
+    },
+    {
+        "model": "palantiriAPI.post",
+        "pk": 3,
+        "fields": {
+            "circle": 1,
+            "circler": 1,
+            "content": "Am I wayyyy too avoidant in relationships?",
+            "date_posted": "2022-09-08"
+        }
+    },
+    {
+        "model": "palantiriAPI.post",
+        "pk": 5,
+        "fields": {
+            "circle": 2,
+            "circler": 2,
+            "content": "Do I have a victim complex???",
+            "date_posted": "2022-09-07"
         }
     }
 ]

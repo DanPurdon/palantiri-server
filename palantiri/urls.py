@@ -18,12 +18,17 @@ from django.conf.urls import include
 from django.urls import path
 from palantiriAPI.views import register_user, login_user
 from rest_framework import routers
-from palantiriAPI.views import PostView, MessageView
+from palantiriAPI.views import PostView, MessageView, CircleView, CommentView, InvitationView, CircleMemberView, CirclerView
 
 router = routers.DefaultRouter(trailing_slash=False)
 # router.register(r'gametypes', GameTypeView, 'gametype')
 router.register(r'messages', MessageView, 'message')
 router.register(r'posts', PostView, 'post')
+router.register(r'circles', CircleView, 'circle')
+router.register(r'comments', CommentView, 'comment')
+router.register(r'invitations', InvitationView, 'invitation')
+router.register(r'members', CircleMemberView, 'member')
+router.register(r'circlers', CirclerView, 'circler')
 
 
 urlpatterns = [

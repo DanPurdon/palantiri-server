@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from palantiriAPI.models import Circler
+from palantiriAPI.models import Circler, Circle
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -49,6 +49,7 @@ def register_user(request):
     new_user = User.objects.create_user(
         username=request.data['username'],
         password=request.data['password'],
+        email=request.data['email'],
         first_name=request.data['first_name'],
         last_name=request.data['last_name']
     )
@@ -57,6 +58,13 @@ def register_user(request):
     circler = Circler.objects.create(
         bio=request.data['bio'],
         user=new_user
+    )
+
+    circle_name = request.data['username'] + "'s Circle"
+
+    circle = Circle.objects.create(
+        circler=circler,
+        name=circle_name
     )
 
     # Use the REST Framework's token generator on the new user account

@@ -22,5 +22,21 @@
             "circler": 3,
             "name": "Hit me with some truth Daddy"
         }
+    },
+    {
+        "model": "palantiriAPI.circle",
+        "pk": 4,
+        "fields": {
+            "circler": 4,
+            "name": "User4's Circle"
+        }
+    },
+    {
+        "model": "palantiriAPI.circle",
+        "pk": 5,
+        "fields": {
+            "circler": 5,
+            "name": "User5's Circle"
+        }
     }
 ]
