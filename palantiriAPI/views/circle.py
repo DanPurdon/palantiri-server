@@ -4,7 +4,7 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from palantiriAPI.models import Message, Circler, Circle, Invitation
+from palantiriAPI.models import Message, Circler, Circle, Invitation, CircleMember
 from django.db.models import Q
 
 class CircleView(ViewSet):
@@ -30,9 +30,6 @@ class CircleView(ViewSet):
             Response -- JSON serialized list of circles
         """
         
-        # current_user = Circler.objects.get(user=request.auth.user)
-        # circle = Circle.objects.get(circler_id=current_user.id)
-        # circle_circles = Circle.objects.filter(Q(circle_id=circle.id) | Q(circler_id=current_user.id))
         circles = Circle.objects.all()
         circler = Circler.objects.get(user=request.auth.user)
 
@@ -43,6 +40,10 @@ class CircleView(ViewSet):
         user = request.query_params.get('current_user', None)
         if user is not None:
             circles = circles.filter(circler_id=circler.id)
+        
+        member = request.query_params.get('current_member', None)
+        if member is not None:
+            circles = circles.filter(circle_members=circler.id)
 
         serializer = CircleSerializer(circles, many=True)
         return Response(serializer.data)
