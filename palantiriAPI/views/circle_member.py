@@ -76,10 +76,13 @@ class CircleMemberView(ViewSet):
             Response -- Empty body with 204 status code
         """
 
-        circle_member = CircleMember.objects.get(pk=pk)
-        circle_member.name = request.data["name"]
+        circler = Circler.objects.get(pk=pk)
+        circler.user.username = request.data["username"]
+        circler.user.first_name = request.data["first_name"]
+        circler.user.last_name = request.data["last_name"]
+        circler.user.email = request.data["email"]
 
-        circle_member.save()
+        circler.save()
 
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 

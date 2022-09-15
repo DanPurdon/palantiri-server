@@ -32,7 +32,12 @@ class CirclerView(ViewSet):
         """
         
         circlers = Circler.objects.all()
+        circler = Circler.objects.get(user=request.auth.user)
         
+        current_user = request.query_params.get('current_user', None)
+        if current_user is not None:
+            serializer = CirclerSerializer(circler)
+            return Response(serializer.data)
 
         email = request.query_params.get('email', None)
         if email is not None:
@@ -54,10 +59,13 @@ class CirclerView(ViewSet):
             Response -- Empty body with 204 status code
         """
 
-        circle_member = Circler.objects.get(pk=pk)
-        circle_member.name = request.data["name"]
+        user = User.objects.get(pk=pk)
+        user.username = request.data["username"]
+        user.first_name = request.data["first_name"]
+        user.last_name = request.data["last_name"]
+        user.email = request.data["email"]
 
-        circle_member.save()
+        user.save()
 
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
@@ -68,5 +76,5 @@ class CirclerSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Circler
-        fields = ('id', 'bio', 'user')
+        fields = ('id', 'bio', 'user', 'circle_info')
         depth = 1
