@@ -40,8 +40,14 @@ class InvitationView(ViewSet):
         circle = Circle.objects.get(circler_id=circler.id)
 
         user = request.query_params.get('current_user', None)
+        # Retrieves all invitations TO the current user's circle
         if user is not None:
             invitations = invitations.filter(circle_id=circle.id)
+        
+        member = request.query_params.get('current_member', None)
+        # Retrieves all invitations to other circles for the current user
+        if member is not None:
+            invitations = invitations.filter(circler_id=circler.id)
 
         serializer = InvitationSerializer(invitations, many=True)
         return Response(serializer.data)

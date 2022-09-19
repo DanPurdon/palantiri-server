@@ -44,6 +44,7 @@ class CircleMemberView(ViewSet):
         circle = Circle.objects.get(circler_id=circler.id)
 
         user = request.query_params.get('current_user', None)
+        # Retrieves all members belonging to current user's circle
         if user is not None:
             circle_members = circle_members.filter(circle_id=circle.id)
 

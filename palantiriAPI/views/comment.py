@@ -60,6 +60,10 @@ class CommentView(ViewSet):
         serializer = CommentSerializer(comment)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    def destroy(self, request, pk):
+        post = Comment.objects.get(pk=pk)
+        post.delete()
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
 
 class CommentSerializer(serializers.ModelSerializer):
     """JSON serializer for comments

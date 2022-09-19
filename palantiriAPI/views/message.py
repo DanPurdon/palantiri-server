@@ -50,8 +50,8 @@ class MessageView(ViewSet):
             Response -- JSON serialized message instance
         """
         circler = Circler.objects.get(user=request.auth.user)
-        circle = Circle.objects.get(id=request.data["circle"])
-
+        circle = Circle.objects.get(pk=request.data["circle"])
+        
         message = Message.objects.create(
             content=request.data["content"],
             date_sent=date.today(),

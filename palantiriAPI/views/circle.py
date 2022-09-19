@@ -4,8 +4,10 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from palantiriAPI.models import Message, Circler, Circle, Invitation, CircleMember
+from palantiriAPI.models import Message, Circler, Circle, Invitation, CircleMember, message
 from django.db.models import Q
+
+from palantiriAPI.views.message import MessageSerializer
 
 class CircleView(ViewSet):
     """Circles view"""
@@ -31,19 +33,32 @@ class CircleView(ViewSet):
         """
         
         circles = Circle.objects.all()
+        messages = Message.objects.all()
         circler = Circler.objects.get(user=request.auth.user)
 
         circle = request.query_params.get('circle', None)
+        # Retrieves circle data with only the current user's messages
         if circle is not None:
-            circles = circles.filter(id=circle)
+            try:
+                selected_circle = Circle.objects.get(pk=circle)
+                selected_circle_messages = messages.filter(Q(circler_id=circler.id) & Q(circle_id = selected_circle.id))
+                serializer = CircleSerializer(selected_circle)
+                message_serializer = MessageSerializer(selected_circle_messages, many=True)
+                data = {"circle" : serializer.data, "myMessages": message_serializer.data}
+                return Response(data)
+            except Circle.DoesNotExist as ex:
+                return Response({'circle': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+            
 
         user = request.query_params.get('current_user', None)
+        # Retrieves current user's circle information
         if user is not None:
             circles = circles.filter(circler_id=circler.id)
         
         member = request.query_params.get('current_member', None)
+        # Retrieves all circles that current user belongs to as a member
         if member is not None:
-            circles = circles.filter(circle_members=circler.id)
+            circles = circles.filter(circle_members__circler_id=circler.id)
 
         serializer = CircleSerializer(circles, many=True)
         return Response(serializer.data)

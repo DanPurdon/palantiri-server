@@ -8,6 +8,8 @@ from rest_framework import serializers, status
 from palantiriAPI.models import Post, Comment, Circler, Circle, CircleMember
 from rest_framework.decorators import action
 from django.db.models import Q
+from palantiriAPI.views.comment import CommentSerializer
+
 
 class PostView(ViewSet):
     """Posts view"""
@@ -31,8 +33,8 @@ class PostView(ViewSet):
         Returns:
             Response -- JSON serialized list of posts
         """
-        # circler = Circler.objects.get(user=request.auth.user)
-        # member_of = CircleMember.objects.filter(circler_id=circler.id)
+        circler = Circler.objects.get(user=request.auth.user)
+        comments = Comment.objects.all()
         # posts = Post.objects.filter(Q(circler_id=circler.id) | Q(circler_id=circler))
         posts = Post.objects.all()
         
@@ -40,8 +42,15 @@ class PostView(ViewSet):
         
         post = request.query_params.get('post', None)
         if post is not None:
-            posts = posts.filter(id=post)
-                    
+            try:
+                selected_post = Post.objects.get(pk=post)
+                selected_post_comments = comments.filter(Q(circler_id=circler.id) & Q(post_id = selected_post.id))
+                serializer = PostSerializer(selected_post)
+                comment_serializer = CommentSerializer(selected_post_comments, many=True)
+                data = {"post" : serializer.data, "myComments": comment_serializer.data}
+                return Response(data)
+            except Post.DoesNotExist as ex:
+                return Response({'post': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
