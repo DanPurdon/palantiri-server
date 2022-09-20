@@ -2,6 +2,7 @@
 from datetime import date, datetime
 from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from palantiriAPI.models import Circler, Circle, Invitation, CircleMember
@@ -29,12 +30,7 @@ class CircleMemberView(ViewSet):
         Returns:
             Response -- JSON serialized list of circle_members
         """
-        
-        # current_user = Circle_memberr.objects.get(user=request.auth.user)
-        # circle_member = Circle_member.objects.get(circle_memberr_id=current_user.id)
-        # circle_member_circle_members = Circle_member.objects.filter(Q(circle_member_id=circle_member.id) | Q(circle_memberr_id=current_user.id))
         circle_members = CircleMember.objects.all()
-        
 
         circle_member = request.query_params.get('member', None)
         if circle_member is not None:
@@ -91,6 +87,16 @@ class CircleMemberView(ViewSet):
         circle_member = CircleMember.objects.get(pk=pk)
         circle_member.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=['delete'], detail=True)
+    def leave(self, request, pk):
+        """Deletes user's membership from a circle"""
+    
+        circler = Circler.objects.get(user=request.auth.user)
+        circle = Circle.objects.get(pk=pk)
+        membership = CircleMember.objects.get(Q(circle_id = circle.id) & Q(circler_id = circler.id))
+        membership.delete()
+        return Response({'message': 'Membership removed'}, status=status.HTTP_204_NO_CONTENT)
 
 
 class CircleMemberSerializer(serializers.ModelSerializer):

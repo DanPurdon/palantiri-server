@@ -21,7 +21,6 @@ from rest_framework import routers
 from palantiriAPI.views import PostView, MessageView, CircleView, CommentView, InvitationView, CircleMemberView, CirclerView
 
 router = routers.DefaultRouter(trailing_slash=False)
-# router.register(r'gametypes', GameTypeView, 'gametype')
 router.register(r'messages', MessageView, 'message')
 router.register(r'posts', PostView, 'post')
 router.register(r'circles', CircleView, 'circle')
@@ -36,5 +35,4 @@ urlpatterns = [
     path('login', login_user),
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
-    # path('', include('levelupreports.urls')),
 ]
